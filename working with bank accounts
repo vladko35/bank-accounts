@@ -1,0 +1,143 @@
+//Програма за работа с банкови сметки
+#include <iostream>
+using namespace std;
+
+float B[101];
+int number = 0;
+
+void Read() // въвеждане елементите на масива
+{
+	cout << "How many bank accounts you want to input? ";
+	cin >> number;
+	while (number < 1 || number > 100)
+	{
+		cout << "Please enter a number between 1 and 100: ";
+		cin >> number;
+	}
+	for (int i = 1; i <= number; i++)
+	{
+		cout << i << "= ";
+		cin >> B[i];
+	}
+}
+
+void AddAccount() // добавяне на нова банкова сметка
+{
+	if (number >= 100)
+		cout << "\nYou can't add any more bank accounts.\n";
+	else
+	{
+		cout << "\nHow much money will this account have?\n";
+		number++;
+		cin >> B[number];
+	}
+}
+
+int MaxMoney() // извежда сметката с най-голяма сума
+{
+	float max = B[1];
+	int index = 0;
+	for (int i = 1; i <= number; i++)
+		if (B[i] > max)
+		{
+			max = B[i];
+			index = i;
+		}
+	return index;
+}
+
+void Alimentation() // олихвяване на всички банкови сметки с въведен процент
+{
+	float percent = 0;
+	cout << "\nEnter with what number (percent) you want to alimentate all accounts: ";
+	cin >> percent;
+	for (int i = 1; i <= number; i++)
+	{
+		B[i] += (B[i] / 100) * percent;
+		cout << i << "= " << B[i] << endl;
+	}
+}
+
+void DepositWithdraw() // внасяне или теглене на пари от избрана банкова сметка
+{
+	int bank_acc = 0, choice = 0;
+	float money = 0;
+	cout << "\nChoose a bank account you want to work with: ";
+	cin >> bank_acc;
+	while (bank_acc < 1 || bank_acc > number) // проверка дали има такъв номер на сметка
+	{
+		cout << "\nThere in no bank account with that number. Please enter correct bank account: ";
+		cin >> bank_acc;
+	}
+	cout << "\nPlease select what you want to do: \n";
+	cout << "1 - Deposit/n2 - Withdraw ";
+	cin >> choice;
+	while (choice < 1 || choice > 2)
+	{
+		cout << "\nPlease select 1 or 2 from the menu: ";
+		cin >> choice;
+	}
+	if (choice == 1)
+	{
+		cout << "\nPlease enter how much money you want to deposit: ";
+		cin >> money;
+		B[bank_acc] += money;
+	}
+	else
+	{
+		cout << "\nPlease enter how much money you want to withdraw: ";
+		cin >> money;
+		B[bank_acc] -= money;
+	}
+}
+
+void ReadAcc() // отпечатване на сметка по нейният номер
+{
+	int index = 0;
+	cout << "\nEnter the number of bank account you want to see: ";
+	cin >> index;
+	while (index < 1 || index > number)
+	{
+		cout << "\nThere is no bank account with that number. Please select correct number: ";
+		cin >> index;
+	}
+	cout << "\nThat account have " << B[index] << " money in it.\n";
+}
+
+
+int main()
+{
+	int choice = 0;
+	cout << "0 - Exit\n";
+	cout << "1 - Enter bank account\n";
+	cout << "2 - Add a new bank account\n";
+	cout << "3 - Output the bank account with the most money in it\n";
+	cout << "4 - Alimentate all bank accounts with entered percent\n";
+	cout << "5 - Deposit or withdraw money from selected bank account\n";
+	cout << "6 - Output selected bank account\n";
+
+	cout << "\nMake a choice from the menu above: ";
+	cin >> choice;
+
+	while (choice)
+	{
+		switch (choice)
+		{
+		case 0: break;
+		case 1: Read(); break;
+		case 2: AddAccount(); break;
+		case 3: cout << "The bank account with most money in it is " << MaxMoney(); break;
+		case 4: Alimentation(); break;
+		case 5: DepositWithdraw(); break;
+		case 6: ReadAcc(); break;
+		default:
+		{
+			cout << "Please select right number from the menu above: ";
+			cin >> choice;
+		}
+		}
+		cout << "\nMake a choice from the menu above: ";
+		cin >> choice;
+	}
+	return 0;
+}
